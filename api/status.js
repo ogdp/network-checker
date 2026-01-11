@@ -1,5 +1,5 @@
 // api/status.js
-const { MongoClient } = require("mongodb");
+import { MongoClient } from "mongodb";
 
 const uri =
   "mongodb+srv://ducmynguyen502_db_user:T0rAxZlDgCTSbibt@network-checker.ukvm7r9.mongodb.net/?appName=network-checker";
@@ -15,7 +15,7 @@ async function connectDB() {
   return clientPromise;
 }
 
-module.exports = async function (req, res) {
+export default async function handler(req, res) {
   try {
     const client = await connectDB();
     const db = client.db("network-checker");
@@ -32,4 +32,7 @@ module.exports = async function (req, res) {
     console.error("Status error:", err);
     res.status(500).json({ status: "Offline", error: err.message });
   }
-};
+}
+
+// Chạy thử local:
+handler({}, { status: () => ({ json: console.log }) });
