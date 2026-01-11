@@ -1,54 +1,118 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trạng thái mạng - Phòng của tôi</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-  <style>
-    body {
-      text-align: center;
-      padding: 60px 20px;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    .status {
-      font-size: 2em;
-      font-weight: bold;
-      margin-top: 20px;
-      transition: color 0.3s;
-    }
-    .online {
-      color: green;
-    }
-    .offline {
-      color: red;
-    }
-  </style>
-</head>
-<body>
-  <main class="container">
-    <h1>Trạng thái mạng trên phòng</h1>
-    <p>Trang sẽ tự động cập nhật mỗi 10 giây.</p>
-    <div id="status" class="status">Đang kiểm tra...</div>
-  </main>
-
-  <script>
-    async function checkStatus() {
-      try {
-        const res = await fetch("/api/status");
-        const data = await res.json();
-        const el = document.getElementById("status");
-        el.textContent = data.status === "Online" ? "🟢 ONLINE" : "🔴 OFFLINE";
-        el.className = "status " + (data.status === "Online" ? "online" : "offline");
-      } catch (err) {
-        console.error("Lỗi khi kiểm tra trạng thái:", err);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trạng thái mạng - Phòng của tôi</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <style>
+      body {
+        text-align: center;
+        padding: 60px 20px;
       }
-    }
+      h1 {
+        margin-bottom: 10px;
+      }
+      .status {
+        font-size: 2em;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: color 0.3s;
+      }
+      .online {
+        color: green;
+      }
+      .offline {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Trạng thái mạng trên phòng</h1>
+      <p>Trang sẽ tự động cập nhật mỗi 10 giây.</p>
+      <div id="status" class="status">Đang kiểm tra...</div>
+    </main>
 
-    checkStatus();
-    setInterval(checkStatus, 10000);
-  </script>
-</body>
+    <script>
+      async function checkStatus() {
+        try {
+          const res = await fetch("/api/status");
+          const data = await res.json();
+          const el = document.getElementById("status");
+          el.textContent =
+            data.status === "Online" ? "🟢 ONLINE" : "🔴 OFFLINE";
+          el.className =
+            "status " + (data.status === "Online" ? "online" : "offline");
+        } catch (err) {
+          console.error("Lỗi khi kiểm tra trạng thái:", err);
+        }
+      }
+
+      checkStatus();
+      setInterval(checkStatus, 10000);
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trạng thái mạng - Phòng của tôi</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <style>
+      body {
+        text-align: center;
+        padding: 60px 20px;
+      }
+      h1 {
+        margin-bottom: 10px;
+      }
+      .status {
+        font-size: 2em;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: color 0.3s;
+      }
+      .online {
+        color: green;
+      }
+      .offline {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Trạng thái mạng trên phòng</h1>
+      <p>Trang sẽ tự động cập nhật mỗi 10 giây.</p>
+      <div id="status" class="status">Đang kiểm tra...</div>
+    </main>
+
+    <script>
+      async function checkStatus() {
+        try {
+          const res = await fetch("/api/status");
+          const data = await res.json();
+          const el = document.getElementById("status");
+          el.textContent =
+            data.status === "Online" ? "🟢 ONLINE" : "🔴 OFFLINE";
+          el.className =
+            "status " + (data.status === "Online" ? "online" : "offline");
+        } catch (err) {
+          console.error("Lỗi khi kiểm tra trạng thái:", err);
+        }
+      }
+
+      checkStatus();
+      setInterval(checkStatus, 10000);
+    </script>
+  </body>
 </html>

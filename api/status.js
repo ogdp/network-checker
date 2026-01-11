@@ -1,9 +1,30 @@
 // api/status.js
-import { lastPing } from "./ping.js";
+import { MongoClient } from "mongodb";
 
-export default function handler(req, res) {
-  const now = Date.now();
-  const diff = (now - lastPing) / 1000;
-  const online = diff < 60; // nếu ping trong vòng 60s gần nhất => Online
-  res.status(200).json({ status: online ? "Online" : "Offline" });
+// 🔧 Dùng chung cache kết nối với ping.js
+const uri =
+  "mongodb+srv://ducmynguyen502_db_user:T0rAxZlDgCTSbibt@network-checker.ukvm7r9.mongodb.net/?appName=network-checker";
+if (!global._mongoClientPromise) {
+  const client = new MongoClient(uri);
+  global._mongoClientPromise = client.connect();
+}
+const clientPromise = global._mongoClientPromise;
+
+export default async function handler(req, res) {
+  try {
+    const client = await clientPromise;
+    const db = client.db("network_checker");
+    const collection = db.collection("pings");
+
+    const record = await collection.findOne({ device: "room" });
+    const now = Math.floor(Date.now() / 1000);
+    const lastPing = record?.lastPing || 0;
+    const diff = now - lastPing;
+    const online = diff < 60;
+
+    res.status(200).json({ status: online ? "Online" : "Offline", diff });
+  } catch (err) {
+    console.error("Status error:", err);
+    res.status(500).json({ status: "Offline", error: err.message });
+  }
 }
