@@ -1,18 +1,23 @@
 // api/status.js
-import { MongoClient } from "mongodb";
+const { MongoClient } = require("mongodb");
 
-// 🔧 Dùng chung cache kết nối với ping.js
 const uri =
   "mongodb+srv://ducmynguyen502_db_user:T0rAxZlDgCTSbibt@network-checker.ukvm7r9.mongodb.net/?appName=network-checker";
-if (!global._mongoClientPromise) {
-  const client = new MongoClient(uri);
-  global._mongoClientPromise = client.connect();
-}
-const clientPromise = global._mongoClientPromise;
 
-export default async function handler(req, res) {
+let client;
+let clientPromise;
+
+async function connectDB() {
+  if (!clientPromise) {
+    client = new MongoClient(uri);
+    clientPromise = client.connect();
+  }
+  return clientPromise;
+}
+
+module.exports = async function (req, res) {
   try {
-    const client = await clientPromise;
+    const client = await connectDB();
     const db = client.db("network-checker");
     const collection = db.collection("pings");
 
@@ -27,4 +32,4 @@ export default async function handler(req, res) {
     console.error("Status error:", err);
     res.status(500).json({ status: "Offline", error: err.message });
   }
-}
+};
