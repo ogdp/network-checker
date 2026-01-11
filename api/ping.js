@@ -1,6 +1,6 @@
 // api/ping.js
 import { MongoClient } from "mongodb";
-import { MONGODB_URI } from "../__config";
+import { MONGODB_URI } from "../__config.js";
 
 let client;
 let clientPromise;
