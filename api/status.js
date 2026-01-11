@@ -1,15 +1,13 @@
 // api/status.js
 import { MongoClient } from "mongodb";
-
-const uri =
-  "mongodb+srv://ducmynguyen502_db_user:T0rAxZlDgCTSbibt@network-checker.ukvm7r9.mongodb.net/?appName=network-checker";
+import { MONGODB_URI } from "../__config";
 
 let client;
 let clientPromise;
 
 async function connectDB() {
   if (!clientPromise) {
-    client = new MongoClient(uri);
+    client = new MongoClient(MONGODB_URI);
     clientPromise = client.connect();
   }
   return clientPromise;
