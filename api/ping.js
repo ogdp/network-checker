@@ -13,7 +13,7 @@ const clientPromise = global._mongoClientPromise;
 export default async function handler(req, res) {
   try {
     const client = await clientPromise;
-    const db = client.db("network_checker");
+    const db = client.db("network-checker");
     const collection = db.collection("pings");
 
     const timestamp = Math.floor(Date.now() / 1000);
