@@ -28,13 +28,19 @@
       .offline {
         color: red;
       }
+      .info {
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #666;
+      }
     </style>
   </head>
   <body>
     <main class="container">
       <h1>Trạng thái mạng trên phòng</h1>
-      <p>Trang sẽ tự động cập nhật mỗi 10 giây.</p>
+      <p>Trang sẽ tự động cập nhật mỗi 5 giây.</p>
       <div id="status" class="status">Đang kiểm tra...</div>
+      <div id="info" class="info"></div>
     </main>
 
     <script>
@@ -43,17 +49,21 @@
           const res = await fetch("/api/status");
           const data = await res.json();
           const el = document.getElementById("status");
+          const infoEl = document.getElementById("info");
+
           el.textContent =
             data.status === "Online" ? "🟢 ONLINE" : "🔴 OFFLINE";
           el.className =
             "status " + (data.status === "Online" ? "online" : "offline");
+
+          infoEl.textContent = `Lần ping cuối: ${data.diff}s trước`;
         } catch (err) {
           console.error("Lỗi khi kiểm tra trạng thái:", err);
         }
       }
 
       checkStatus();
-      setInterval(checkStatus, 10000);
+      setInterval(checkStatus, 5000); // Cập nhật mỗi 5 giây
     </script>
   </body>
 </html>

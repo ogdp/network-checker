@@ -29,10 +29,14 @@ export default async function handler(req, res) {
     );
 
     console.log("Ping thành công:", timestamp);
+
+    // Trả response cho client
+    res.status(200).json({ success: true, timestamp });
   } catch (err) {
     console.error("Ping error:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 }
 
-// Nếu bạn chạy file trực tiếp (node ping.js)
-handler({}, { status: () => ({ json: console.log }) });
+// XÓA dòng test local này khi deploy lên Vercel
+// handler({}, { status: () => ({ json: console.log }) });

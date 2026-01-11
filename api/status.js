@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const now = Math.floor(Date.now() / 1000);
     const lastPing = record?.lastPing || 0;
     const diff = now - lastPing;
-    const online = diff < 60;
+    const online = diff < 15; // Thay đổi từ 60s sang 15s (3 lần ping bỏ lỡ)
 
     res.status(200).json({ status: online ? "Online" : "Offline", diff });
   } catch (err) {
@@ -34,5 +34,5 @@ export default async function handler(req, res) {
   }
 }
 
-// Chạy thử local:
-handler({}, { status: () => ({ json: console.log }) });
+// XÓA dòng test local này khi deploy lên Vercel
+// handler({}, { status: () => ({ json: console.log }) });
