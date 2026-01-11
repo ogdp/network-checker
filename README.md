@@ -63,19 +63,20 @@ Máy này sẽ tự động:
 Tạo file `network-check.ps1`:
 
 ```powershell
-$endpoint = "https://tenmiencuaban.vercel.app/api/ping"  # đổi link của bạn
+$endpoint = "https://network-checker-tawny.vercel.app/api/ping"  # đổi link của bạn
+
 while ($true) {
-if (Test-Connection -Count 1 8.8.8.8 -Quiet) {
- try {
-   Invoke-WebRequest -Uri $endpoint -UseBasicParsing | Out-Null
-   Write-Host "🟢 Mạng OK - Ping đã gửi thành công" -ForegroundColor Green
- } catch {
-   Write-Host "⚠️ Không gửi được ping đến server" -ForegroundColor Yellow
- }
-} else {
- Write-Host "🔴 Mạng đang mất hoặc không truy cập Internet" -ForegroundColor Red
-}
-Start-Sleep -Seconds 30
+    if (Test-Connection -Count 1 8.8.8.8 -Quiet) {
+        try {
+            Invoke-WebRequest -Uri $endpoint -UseBasicParsing | Out-Null
+            Write-Host "🟢 Mạng OK - Ping đã gửi thành công" -ForegroundColor Green
+        } catch {
+            Write-Host "⚠️ Không gửi được ping đến server" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "🔴 Mạng đang mất hoặc không truy cập Internet" -ForegroundColor Red
+    }
+    Start-Sleep -Seconds 5  # Thay đổi từ 30 sang 5 giây
 }
 ````
 
