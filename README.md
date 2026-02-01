@@ -59,7 +59,7 @@ Máy khách (ví dụ: thiết bị ở phòng khác) sẽ:
 Tạo file `network-check.ps1` với nội dung sau:
 
 ```powershell
-$endpoint = "https://your-vercel-domain.vercel.app/api/ping"  # thay bằng link của bạn
+$endpoint = "https://network-checker-tawny.vercel.app/api/ping"  # thay bằng link của bạn
 
 while ($true) {
     if (Test-Connection -Count 1 8.8.8.8 -Quiet) {
