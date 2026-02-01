@@ -1,86 +1,82 @@
-Tuyệt vời 💪
-Dưới đây là file **`README.md`** hoàn chỉnh (chuẩn Markdown, đẹp, dễ đọc trên GitHub) cho dự án kiểm tra trạng thái mạng của bạn.
-Bạn chỉ cần copy nội dung này vào file `README.md` trong repo.
+````markdown
+# 🌐 Network Checker – Giải pháp giám sát trạng thái mạng từ xa
+
+**Network Checker** là một công cụ đơn giản, linh hoạt giúp **theo dõi tình trạng kết nối mạng của máy tính từ xa** và **hiển thị kết quả trực tiếp trên giao diện web**.  
+Phù hợp cho cá nhân, doanh nghiệp hoặc tổ chức muốn giám sát ổn định mạng tại các thiết bị đặt cách xa trung tâm.
 
 ---
 
-```markdown
-# 🌐 Network Checker – Kiểm tra trạng thái mạng từ xa
+## ⚙️ Tính năng nổi bật
 
-Dự án này giúp bạn **giám sát trạng thái mạng của một máy tính không ổn định** (ví dụ ở phòng trên tầng), và **xem kết quả trực tiếp qua web** trên điện thoại hoặc thiết bị khác.
-
----
-
-## ⚙️ Tính năng chính
-
-✅ Theo dõi **mạng có hoạt động hay không** theo thời gian thực  
-✅ Giao diện web đơn giản, đẹp, tự động cập nhật trạng thái mỗi 10 giây  
-✅ Không cần cài đặt phức tạp — chỉ cần GitHub + Vercel  
-✅ Hỗ trợ **Windows (PowerShell)** và **Linux/macOS (bash script)**
+- ✅ Giám sát **trạng thái kết nối mạng** theo thời gian thực
+- ✅ **Giao diện web trực quan**, tự động cập nhật mỗi 10 giây
+- ✅ **Triển khai dễ dàng** – hoạt động ngay trên GitHub + Vercel
+- ✅ Hỗ trợ đầy đủ cho **Windows (PowerShell)** và **Linux/macOS (Bash)**
+- ✅ Có thể mở rộng, tùy chỉnh theo nhu cầu tổ chức
 
 ---
 
 ## 🧩 Cấu trúc dự án
-```
 
+```plaintext
 network-checker/
-├── index.html # Giao diện web chính (HTML thuần)
+├── index.html           # Giao diện web chính (hiển thị trạng thái)
 └── api/
-├── ping.js # API nhận tín hiệu ping từ máy ở phòng
-└── status.js # API trả về trạng thái hiện tại (Online / Offline)
-
+    ├── ping.js          # API nhận tín hiệu ping từ thiết bị kiểm tra
+    └── status.js        # API phản hồi trạng thái hiện tại (Online / Offline)
 ```
-
----
-
-## 🚀 Cách triển khai
-
-### 1️⃣ Tạo repo GitHub & deploy Vercel
-1. Tạo repo mới, ví dụ: `network-checker`
-2. Thêm các file:
-   - `index.html`
-   - `api/ping.js`
-   - `api/status.js`
-3. Deploy repo lên [**Vercel**](https://vercel.com)
-4. Sau khi deploy xong, bạn sẽ có link như:
-```
-
-[https://network-checker.vercel.app](https://network-checker.vercel.app)
-
 ````
 
 ---
 
-### 2️⃣ Chạy script kiểm tra mạng tại máy ở phòng
+## 🚀 Hướng dẫn triển khai
 
-Máy này sẽ tự động:
-- Ping Google DNS (8.8.8.8) để kiểm tra kết nối Internet
-- Nếu có mạng, gửi tín hiệu lên server (Vercel)
-- Web sẽ hiển thị trạng thái 🟢 hoặc 🔴 tương ứng
+### **Bước 1: Tạo repository và triển khai lên Vercel**
+
+1. Tạo repository mới, ví dụ: `network-checker`
+2. Thêm các tệp cần thiết:
+   - `index.html`
+   - `api/ping.js`
+   - `api/status.js`
+3. Deploy dự án lên [Vercel](https://vercel.com)
+4. Sau khi triển khai thành công, bạn sẽ có đường dẫn dạng:
+   ```
+   https://network-checker.vercel.app
+   ```
+
+---
+
+### **Bước 2: Cấu hình và chạy script tại máy cần giám sát**
+
+Máy khách (ví dụ: thiết bị ở phòng khác) sẽ:
+
+- Ping đến Google DNS (8.8.8.8) để kiểm tra kết nối mạng
+- Gửi tín hiệu ping lên endpoint của bạn (được host trên Vercel)
+- Website hiển thị trạng thái 🟢 hoặc 🔴 tương ứng
 
 #### 🪟 **Windows (PowerShell)**
 
-Tạo file `network-check.ps1`:
+Tạo file `network-check.ps1` với nội dung sau:
 
 ```powershell
-$endpoint = "https://network-checker-tawny.vercel.app/api/ping"  # đổi link của bạn
+$endpoint = "https://your-vercel-domain.vercel.app/api/ping"  # thay bằng link của bạn
 
 while ($true) {
     if (Test-Connection -Count 1 8.8.8.8 -Quiet) {
         try {
             Invoke-WebRequest -Uri $endpoint -UseBasicParsing | Out-Null
-            Write-Host "🟢 Mạng OK - Ping đã gửi thành công" -ForegroundColor Green
+            Write-Host "🟢 Mạng hoạt động ổn định - Ping gửi thành công" -ForegroundColor Green
         } catch {
-            Write-Host "⚠️ Không gửi được ping đến server" -ForegroundColor Yellow
+            Write-Host "⚠️ Không thể gửi ping đến server" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "🔴 Mạng đang mất hoặc không truy cập Internet" -ForegroundColor Red
+        Write-Host "🔴 Mất kết nối Internet" -ForegroundColor Red
     }
-    Start-Sleep -Seconds 5  # Thay đổi từ 30 sang 5 giây
+    Start-Sleep -Seconds 3
 }
-````
+```
 
-Chạy bằng:
+Chạy script:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\network-check.ps1
@@ -88,26 +84,25 @@ powershell -ExecutionPolicy Bypass -File .\network-check.ps1
 
 ---
 
-#### 🐧 **Linux / macOS (bash script)**
+#### 🐧 **Linux / macOS (Bash)**
 
 Tạo file `network-check.sh`:
 
 ```bash
 #!/bin/bash
-
-ENDPOINT="https://tenmiencuaban.vercel.app/api/ping"  # đổi link của bạn
+ENDPOINT="https://your-vercel-domain.vercel.app/api/ping"  # thay bằng link của bạn
 
 while true; do
   if ping -c 1 8.8.8.8 >/dev/null 2>&1; then
-    curl -s $ENDPOINT >/dev/null && echo "🟢 Mạng OK - Ping đã gửi thành công" || echo "⚠️ Không gửi được ping đến server"
+    curl -s $ENDPOINT >/dev/null && echo "🟢 Kết nối mạng ổn định" || echo "⚠️ Ping không gửi được"
   else
-    echo "🔴 Mạng đang mất hoặc không truy cập Internet"
+    echo "🔴 Mất kết nối Internet"
   fi
-  sleep 30
+  sleep 10
 done
 ```
 
-Chạy bằng:
+Chạy script:
 
 ```bash
 chmod +x network-check.sh
@@ -116,53 +111,54 @@ chmod +x network-check.sh
 
 ---
 
-### 3️⃣ Xem kết quả
+### **Bước 3: Giám sát trạng thái trực tiếp**
 
-Mở trình duyệt và truy cập link Vercel (ví dụ):
+Truy cập website Vercel để xem trạng thái:
 
 ```
 https://network-checker.vercel.app
 ```
 
-Trang web sẽ hiển thị:
+Giao diện hiển thị:
 
-- 🟢 **ONLINE** – Máy ở phòng có mạng và đã ping thành công
-- 🔴 **OFFLINE** – Mất mạng hoặc không gửi được tín hiệu
-
----
-
-## 🧠 Cách hoạt động
-
-1. Khi script ở máy trong phòng có Internet, nó **gửi request `/api/ping`**
-2. Server (Vercel) ghi lại thời gian ping gần nhất
-3. Khi bạn mở web, **`/api/status`** kiểm tra lần ping cuối có trong vòng 60 giây không:
-
-   - Nếu **có** → hiển thị 🟢 Online
-   - Nếu **không** → hiển thị 🔴 Offline
+- 🟢 **ONLINE** – Máy được giám sát có kết nối mạng
+- 🔴 **OFFLINE** – Mất mạng hoặc ping không phản hồi
 
 ---
 
-## 🛠️ Tùy chỉnh
+## 🧠 Nguyên lý hoạt động
 
-- Thay `8.8.8.8` bằng IP khác nếu bạn muốn ping một máy cụ thể trong mạng LAN
-- Thay `sleep 30` thành `sleep 10` nếu muốn cập nhật nhanh hơn
-- Thay đổi màu hoặc giao diện trong `index.html` nếu muốn cá nhân hóa
-
----
-
-## 🧑‍💻 Tác giả
-
-**Người phát triển:** _Bạn_ (hoặc thêm tên nhóm của bạn)
-Ý tưởng và hướng dẫn triển khai: hỗ trợ bởi **ChatGPT (GPT-5)**
+1. Script tại thiết bị gửi request định kỳ đến API `/api/ping`
+2. Server (Vercel) lưu lại thời gian ping gần nhất
+3. Khi người dùng truy cập website:
+   - API `/api/status` kiểm tra thời điểm ping gần nhất
+   - Kết luận **Online** nếu ping trong vòng 60 giây, ngược lại là **Offline**
 
 ---
 
-> 💡 _Gợi ý:_ Bạn có thể bật script ở máy trên phòng khi khởi động (Startup) để hệ thống tự gửi ping khi mở máy.
+## 🛠️ Tùy chỉnh mở rộng
 
-```
+- Thay đổi địa chỉ ping (`8.8.8.8`) để kiểm tra một máy trong mạng LAN
+- Điều chỉnh chu kỳ kiểm tra (`sleep 10`) tùy nhu cầu cập nhật
+- Chỉnh sửa màu sắc, giao diện, thông điệp trong `index.html` theo nhận diện thương hiệu
+- Có thể lưu log hoặc gửi cảnh báo qua email / webhook (tuỳ tích hợp thêm)
 
 ---
 
-👉 Bạn có muốn mình giúp **tạo sẵn file ZIP dự án đầy đủ + README này** để bạn chỉ việc push lên GitHub không?
-Mình có thể gói lại toàn bộ cấu trúc đúng chuẩn để bạn upload một phát là chạy ngay.
-```
+## 👤 Tác giả & Đóng góp
+
+**Tác giả:** _[Tên của bạn hoặc doanh nghiệp của bạn]_  
+**Liên hệ:** _[Email / Website / LinkedIn]_
+
+> Được phát triển với mục tiêu mang lại **khả năng giám sát kết nối đơn giản, hiệu quả và chi phí thấp** cho cá nhân và doanh nghiệp.
+
+---
+
+### 💡 Gợi ý triển khai tự động
+
+- Thiết lập script chạy cùng hệ thống (Startup Script) để tự động gửi ping khi máy khởi động.
+- Có thể đặt cron job trên Linux / Task Scheduler trên Windows để giám sát định kỳ.
+
+---
+
+> © 2026 Network Checker. All rights reserved.
